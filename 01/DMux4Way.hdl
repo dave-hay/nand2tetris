@@ -17,4 +17,21 @@ CHIP DMux4Way {
 
     PARTS:
     // Put your code here:
+    // if in == 0 then all 0
+
+    Not(in=sel[0], out=notSel);
+
+    DMux(in=in, sel=sel[1], a=tmpa, b=tmpc);
+    And(a=tmpa, b=notSel, out=ares);
+    And(a=tmpc, b=notSel, out=cres);
+
+    DMux(in=in, sel=sel[1], a=tmpb, b=tmpd);
+    And(a=tmpb, b=sel[0], out=bres);
+    And(a=tmpd, b=sel[0], out=dres);
+
+    // if in==0 then all outputs are 0
+    And(a=ares, b=in, out=a);
+    And(a=cres, b=in, out=c);
+    And(a=bres, b=in, out=b);
+    And(a=dres, b=in, out=d);
 }

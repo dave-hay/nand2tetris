@@ -17,4 +17,10 @@ CHIP Mux4Way16 {
 
     PARTS:
     // Put your code here:
+    // sel[0] == 0 means a or b
+    // sel[0] == 1 mean b or c
+    // find where 00, 01 v 10, 11
+    Mux16(a=a, b=b, sel=sel[0], out=p1);
+    Mux16(a=c, b=d, sel=sel[0], out=p2);
+    Mux16(a=p1, b=p2, sel=sel[1], out=out);
 }
