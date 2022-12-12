@@ -12,9 +12,20 @@
  */
 
 CHIP PC {
-    IN in[16],load,inc,reset;
+    IN in[16],reset,load,inc;
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Nor(a=reset, b=load, out=incPossible); // Not(reset or load)
+    And(a=incPossible, b=inc, out=incRes); // Only inc possible and inc=1
+    Add16(a=reg, b[0]=incRes, out=regAdd);
+
+    Not(in=reset, out=notReset);
+    And(a=notReset, b=load, out=loadRes);
+    Mux16(a=regAdd, b=in, sel=loadRes, out=regLoad);
+
+    Mux16(a=regLoad, b=false, sel=reset, out=regFinal);
+
+    Register(in=regFinal, load=true, out=reg);
+    And16(a=reg, b=reg, out=out);
 }
